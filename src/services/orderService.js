@@ -17,11 +17,11 @@ export const getOrders = async () => {
   }
 };
 
-export const placeOrder = async () => {
+export const placeOrder = async (paymentMethod, shippingAddress) => {
   try {
     const response = await axios.post(
       API_URL,
-      {},
+      { payment_method: paymentMethod, shipping_address: shippingAddress },  // ✅ Include shipping address
       {
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -31,7 +31,25 @@ export const placeOrder = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error placing order:", error);
+    console.error("❌ Error placing order:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const updateOrderStatus = async (orderId, newStatus) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/${orderId}/status?status=${newStatus}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating order status:", error.response?.data || error.message);
     throw error;
   }
 };

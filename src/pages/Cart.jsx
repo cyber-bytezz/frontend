@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getCartItems, decreaseCartItemQuantity, removeFromCart } from "../services/cartService";
-import { placeOrder } from "../services/orderService";
+import { useNavigate } from "react-router-dom";
+import "../styles/cart.css"; // Same CSS as before
 
 const Cart = () => {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -16,17 +19,20 @@ const Cart = () => {
     }
   }, [token]);
 
-  // ✅ Fix: Update UI instantly when decreasing quantity
   const handleDecreaseQuantity = async (productId, currentQuantity) => {
     try {
       if (currentQuantity === 1) {
         await removeFromCart(productId);
-        setCartItems((prevCartItems) => prevCartItems.filter((item) => item.product_id !== productId));
+        setCartItems((prev) =>
+          prev.filter((item) => item.product_id !== productId)
+        );
       } else {
         await decreaseCartItemQuantity(productId);
-        setCartItems((prevCartItems) =>
-          prevCartItems.map((item) =>
-            item.product_id === productId ? { ...item, quantity: item.quantity - 1 } : item
+        setCartItems((prev) =>
+          prev.map((item) =>
+            item.product_id === productId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
           )
         );
       }
@@ -35,58 +41,95 @@ const Cart = () => {
     }
   };
 
-  const handleCheckout = async () => {
-    try {
-      await placeOrder();
-      alert("Order placed successfully!");
-      setCartItems([]);
-    } catch (err) {
-      setError("Failed to place order.");
-    }
+  // Simulate a short loading state before navigating
+  const handleCheckout = () => {
+    setLoading(true);
+    setTimeout(() => {
+      navigate("/checkout");
+    }, 1000);
   };
+
+  // 1. Calculate total cart amount
+  const totalAmount = cartItems.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
 
   if (!token) {
     return <p>Please login to view your cart.</p>;
   }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="cart-container">
       <h2>Your Cart</h2>
+      {error && <p className="error">{error}</p>}
+
       {cartItems.length === 0 ? (
-        <p>Cart is empty.</p>
+        <p className="empty-cart">Cart is empty.</p>
       ) : (
         <>
-          <table border="1" style={{ width: "100%", textAlign: "left" }}>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Action</th> {/* Column for "-" button */}
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.product_id}>
-                  <td><strong>{item.name}</strong></td>
-                  <td>${item.price.toFixed(2)}</td>
-                  <td>{item.quantity}</td>
-                  <td>${(item.price * item.quantity).toFixed(2)}</td>
-                  <td>
-                    <button
-                      onClick={() => handleDecreaseQuantity(item.product_id, item.quantity)}
-                      style={{ backgroundColor: "black", color: "white", border: "none", padding: "5px 10px" }}
-                    >
-                      -
-                    </button>
+          <div className="table-responsive">
+            <table className="cart-table">
+              <thead>
+                <tr>
+                  <th className="cart-th">Product</th>
+                  <th className="cart-th">Price</th>
+                  <th className="cart-th">Quantity</th>
+                  <th className="cart-th">Total</th>
+                  <th className="cart-th">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems.map((item) => (
+                  <tr key={item.product_id} className="cart-tr">
+                    <td className="cart-td">
+                      <strong>{item.name}</strong>
+                    </td>
+                    <td className="cart-td">${item.price.toFixed(2)}</td>
+                    <td className="cart-td">{item.quantity}</td>
+                    <td className="cart-td">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </td>
+                    <td className="cart-td">
+                      <button
+                        onClick={() =>
+                          handleDecreaseQuantity(item.product_id, item.quantity)
+                        }
+                        className="cart-btn minus-btn"
+                      >
+                        -
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+
+              {/* 2. Add a table footer to display the grand total */}
+              <tfoot>
+                <tr>
+                  {/* Spanning the first 3 columns, so total aligns nicely */}
+                  <td colSpan="3"></td>
+                  <td className="cart-td">
+                    <strong>Grand Total</strong>
+                  </td>
+                  <td className="cart-td">
+                    <strong>${totalAmount.toFixed(2)}</strong>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={handleCheckout} style={{ marginTop: "10px" }}>Proceed to Checkout</button>
+              </tfoot>
+            </table>
+          </div>
+
+          <button onClick={handleCheckout} className="checkout-btn">
+            {loading ? "Loading..." : "Proceed to Checkout"}
+          </button>
         </>
+      )}
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
       )}
     </div>
   );

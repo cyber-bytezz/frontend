@@ -1,0 +1,52 @@
+.admin-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  .product-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .add-button, .edit-button, .delete-button {
+    margin: 5px;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .add-button {
+    background-color: green;
+    color: white;
+  }
+  
+  .edit-button {
+    background-color: blue;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: red;
+    color: white;
+  }
+  

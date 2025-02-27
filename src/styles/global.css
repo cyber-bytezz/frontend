@@ -1,40 +1,13 @@
+.main-content {
+  margin-top: 70px; /* or padding-top: 70px; */
+}
+
+
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   background: #f2f2f2;
-}
-
-/* Navbar */
-.navbar {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-}
-.navbar h2 {
-  display: inline-block;
-  margin: 0 20px 0 0;
-}
-.navbar ul {
-  display: inline-block;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.navbar ul li {
-  display: inline-block;
-  margin: 0 10px;
-}
-.navbar ul li a {
-  color: white;
-  text-decoration: none;
-}
-.navbar button {
-  background: #444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
 }
 
 /* Auth forms */
@@ -78,7 +51,15 @@ th {
   background-color: #f4f4f4;
 }
 
-.product-list {
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+} 
+
+/* .product-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -102,4 +83,5 @@ button {
   border: none;
   padding: 10px;
   cursor: pointer;
-}
+} 
+

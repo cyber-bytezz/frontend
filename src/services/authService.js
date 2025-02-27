@@ -24,3 +24,21 @@ export const loginUser = async (email, password) => {
 
   return response.data;
 };
+
+export const adminLogin = async (email, password) => {
+  try {
+    const response = await axios.post(`${API_URL}/login`, {
+      username: email,
+      password: password,
+    }, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in as admin:", error.response?.data || error.message);
+    throw error;
+  }
+};

@@ -38,36 +38,25 @@ export const addToCart = async (productId, quantity) => {
   }
 };
 
-// ✅ Decrease product quantity
 export const decreaseCartItemQuantity = async (productId) => {
   try {
-    const response = await axios.put(
-      `${API_URL}${productId}/decrease`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    );
-    return response.data;
+    await axios.put(`${API_URL}${productId}/decrease`, {}, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
   } catch (error) {
-    console.error("❌ Error decreasing product quantity:", error.response?.data || error.message);
+    console.error("Error decreasing cart item quantity:", error);
     throw error;
   }
 };
 
-// ✅ Remove product from cart
+// ✅ Remove from cart if quantity is 1
 export const removeFromCart = async (productId) => {
   try {
-    const response = await axios.delete(`${API_URL}${productId}`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
+    await axios.delete(`${API_URL}${productId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
     });
-    return response.data;
   } catch (error) {
-    console.error("❌ Error removing product from cart:", error.response?.data || error.message);
+    console.error("Error removing from cart:", error);
     throw error;
   }
 };

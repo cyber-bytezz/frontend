@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
-import "../styles/global.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../styles/login.css"; // Import custom styles
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -16,13 +18,8 @@ const Login = () => {
     setError("");
 
     try {
-      // Send form data to login endpoint
       const data = await loginUser(email, password);
-
-      // We assume the backend returns: { access_token, token_type }
-      // For user info, you might need a separate endpoint or decode the token.
-      login({ email }, data.access_token); // store user info & token
-
+      login({ email }, data.access_token); // Store user info & token
       navigate("/");
     } catch (err) {
       setError("Invalid email or password!");
@@ -30,29 +27,46 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          className="auth-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="auth-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className="auth-button" type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <a href="/register">Register here</a></p>
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit} className="login-form">
+          <input
+            type="email"
+            placeholder="Email"
+            className="login-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="login-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <button type="submit" className="login-button">
+            Login
+          </button>
+        </form>
+        <p className="register-text">
+          Don't have an account?{" "}
+          <Link to="/register" className="register-link">
+            Register here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
-import "../styles/global.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../styles/register.css"; // Import our custom register styles
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,52 +26,98 @@ const Register = () => {
 
     try {
       await registerUser(name, email, password);
-      navigate("/login");
+      // Show success modal instead of immediate navigation
+      setSuccess(true);
     } catch (err) {
       setError("Failed to register. Try again!");
     }
   };
 
+  const handleModalClose = () => {
+    setSuccess(false);
+    navigate("/login");
+  };
+
   return (
-    <div className="auth-container">
-      <h2>Register</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          className="auth-input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          className="auth-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="auth-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className="auth-input"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button className="auth-button" type="submit">Register</button>
-      </form>
-      <p>Already have an account? <a href="/login">Login here</a></p>
+    <div className="register-container">
+      <div className="register-card">
+        <h2 className="register-title">Register</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit} className="register-form">
+          <input
+            type="text"
+            placeholder="Name"
+            className="register-input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            className="register-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          {/* Password Field with Toggle */}
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="register-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          {/* Confirm Password Field with Toggle */}
+          <div className="password-container">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              className="register-input"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+          <button type="submit" className="register-button">
+            Register
+          </button>
+        </form>
+        <p className="login-link">
+          Already have an account?{" "}
+          <Link to="/login" className="link">
+            Login here
+          </Link>
+        </p>
+      </div>
+
+      {/* Success Modal */}
+      {success && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Registration Successful</h3>
+            <p>You have registered successfully. Please login to your account.</p>
+            <button className="modal-button" onClick={handleModalClose}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
