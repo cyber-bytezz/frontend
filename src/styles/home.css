@@ -5,12 +5,9 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Roboto", sans-serif;
-  background: #f9f9f9;
-
-  /* If navbar is fixed, ensure content isn't hidden behind it */
-  padding-top: 70px; /* adjust to match your navbar height */
+body, html {
+  font-family: "Poppins", sans-serif;
+  background: #f4f4f9;
 }
 
 /* --- Hero Section --- */

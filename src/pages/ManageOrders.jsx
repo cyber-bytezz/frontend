@@ -48,12 +48,8 @@ const ManageOrders = () => {
               <td>${order.total_price.toFixed(2)}</td>
               <td>{order.status}</td>
               <td>
-                <select
-                  value={order.status}
-                  onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                >
+                <select value={order.status} onChange={(e) => handleStatusChange(order.id, e.target.value)}>
                   <option value="Pending">Pending</option>
-                  <option value="Processing">Processing</option>
                   <option value="Shipped">Shipped</option>
                   <option value="Delivered">Delivered</option>
                 </select>

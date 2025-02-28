@@ -1,0 +1,110 @@
+/* Add Product Page - Modern Form UI */
+.add-product-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f4f4;
+    padding: 20px;
+  }
+  
+  .add-product-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .add-product-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .add-product-message {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #e3fcef;
+    color: #2c9c68;
+  }
+  
+  .add-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fafafa;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .add-product-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .add-product-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .add-product-card {
+      width: 100%;
+      padding: 1.5rem;
+    }
+  
+    .input-group input {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    .add-product-btn {
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+  
+  /* Fade In Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  

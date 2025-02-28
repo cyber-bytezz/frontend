@@ -40,7 +40,25 @@ export const deleteProduct = async (productId) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error deleting product:", error.response?.data || error.message);
+    console.error("❌ Error deleting product:", error.response?.data || error.message);
+    if (error.response?.status === 500) {
+      throw new Error("This product is linked to an order and cannot be deleted.");
+    }
+    throw error;
+  }
+};
+
+export const addProduct = async (productData) => {
+  try {
+    const response = await axios.post(API_URL, productData, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding product:", error.response?.data || error.message);
     throw error;
   }
 };

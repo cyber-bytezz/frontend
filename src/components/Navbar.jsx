@@ -68,7 +68,7 @@ const Navbar = () => {
 
                 {isAdmin && (
                   <li>
-                    <Link to="/admin" onClick={() => setMenuOpen(false)}>
+                    <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
                       Admin Panel
                     </Link>
                   </li>

@@ -12,33 +12,53 @@ import ManageProducts from "../pages/ManageProducts";
 import ManageOrders from "../pages/ManageOrders";
 import AdminLogin from "../pages/AdminLogin";
 import Profile from "../pages/Profile";
+import ProtectedRoute from "../components/ProtectedRoute";
+import AdminAddProduct from "../pages/AdminAddProduct";  // ✅ Import Add Product Page
 
 const AppRoutes = () => {
   return (
     <>
       <Navbar />
       <div className="main-content">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/profile" element={<Profile />} />
-        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
 
-        {/* ✅ Admin Routes */}
-        <Route path="/admin" element={<AdminLogin />} />  {/* ✅ Admin Login Page */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/products" element={<ManageProducts />} />
-        <Route path="/admin/orders" element={<ManageOrders />} />
-        
+          {/* ✅ Admin Routes (Protected) */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/add-product" element={<AdminAddProduct />} /> 
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
+            element={
+              <ProtectedRoute>
+                <ManageProducts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute>
+                <ManageOrders />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Catch-all for 404 */}
-        <Route path="*" element={<h2>404 - Not Found</h2>} />
-      </Routes>
+          <Route path="*" element={<h2>404 - Not Found</h2>} />
+        </Routes>
       </div>
       <Footer />
     </>
